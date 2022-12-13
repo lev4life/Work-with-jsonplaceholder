@@ -22,7 +22,8 @@ box-shadow: 2px 2px 2px grey;
 transition: 0.3s;
 }
 .btn:hover{
-background:#fb8a3a
+background:#fb8a3a;
+box-shadow: 0px 0px 5px #fb8a3a;
 }
 .btn:active{
 background: #9b4b12;

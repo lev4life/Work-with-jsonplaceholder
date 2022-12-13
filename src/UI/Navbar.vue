@@ -38,6 +38,7 @@ export default {};
 
   &:hover {
     background: #fb8a3a;
+    box-shadow: 0 0 5px#fb8a3a;
 
     &:active {
       background: #9b4b12;

@@ -3,19 +3,28 @@
     <my-title>Пост № {{ $route.params.id }}</my-title>
     <form @submit.prevent>
       <h4>Комментарии:</h4>
-      <my-input :value="user" @input="user = $event.target.value" type="text" placeholder="Введите имя пользователя"
+      <my-input
+        class="inp"
+        :value="user"
+        @input="user = $event.target.value"
+        type="text"
+        placeholder="Введите имя пользователя"
         >Пользователь</my-input
       >
-      <my-input :value="title" @input="body = $event.target.value" type="text" placeholder="Введите комментарий"
+      <my-input
+        class="inp"
+        :value="title"
+        @input="body = $event.target.value"
+        type="text"
+        placeholder="Введите комментарий"
         >Название</my-input
       >
-      <my-button @click="createComment">Отправить</my-button>
+      <my-button class="btn" @click="createComment">Отправить</my-button>
     </form>
-    <div v-for="comment in comments"
-        :key="comment">
+    <div v-for="comment in comments" :key="comment">
       <div><strong>Пользователь:</strong>{{ comment.user }}</div>
-        <div><strong>Описание:</strong>{{ comment.body }}</div>
-        <hr />
+      <div><strong>Описание:</strong>{{ comment.body }}</div>
+      <hr />
     </div>
   </div>
 </template>
@@ -35,19 +44,31 @@ export default {
   },
   methods: {
     createComment() {
-     
       const newComment = {
         id: Date.now(),
         user: this.user,
-        body: this.body
+        body: this.body,
+      };
+      if (this.user.length !== 0) {
+        setTimeout(() => {
+          this.comments.push(newComment);
+        }, 2000);
       }
-      
-      setTimeout(() => {
-        this.comments.push(newComment);
-      },2000)
+      this.user = "";
+      this.body = "";
+      //fetchComments
+      //mount(){fetchComments}
     },
-  }
-}
+  },
+};
 </script>
 
-<style></style>
+<style>
+.inp{
+margin: 10px 0px;
+}
+.btn{
+margin-bottom: 10px;
+
+}
+</style>
