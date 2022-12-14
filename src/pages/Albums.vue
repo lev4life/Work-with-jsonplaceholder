@@ -2,13 +2,13 @@
   <div>
     <my-title>Альбом</my-title>
     <form>
-      <select v-model="selectedUserId">
+      <select @input="setSelected" :value="selectedUserId">
         <option :value="user.id" v-for="user in users" :key="user.id">
         {{user.name}}
         </option>
         <option value="nobody">Господин никто</option>
       </select>
-      {{selectedUserId}}
+
     </form>
     <div
         class="albums"
@@ -25,26 +25,37 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 import axios from "axios";
 import MyTitle from '@/UI/MyTitle.vue'
 export default {
   components: { MyTitle },
+  computed: mapState({
+    selectedUserId: state => state.selectedUserId,
+    
+  }),
+
 data() {
   return {
     albums: [],
     users: [],
     id: "",
     title: "",
-    selectedUserId: "nobody",
   }
 },
 methods: {
+  ...mapMutations([
+     'setSelectedUser'
+  ]),
+   setSelected(event){
+    this.setSelectedUser(event.target.value)
+   },
   async createAlbum() {
     if (this.selectedUserId === "nobody") {
         return;
       }
       try{
-        const response = await axios.album(
+        const response = await axios.post(
           "https://jsonplaceholder.typicode.com/albums",
           { id: this.id, title: this.title, userId: this.selectedUserId }
         );
@@ -86,7 +97,7 @@ methods: {
     },
    },
    async mounted() {
-    await this.fetchAlbums();
+    await this.fetchAlbums(this.selectedUserId);
     await this.fetchUsers();
     console.log(this.users);
   },

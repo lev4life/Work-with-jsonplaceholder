@@ -2,13 +2,13 @@
   <div>
     <my-title>Посты</my-title>
     <form @submit.prevent>
-      <select v-model="selectedUserId">
+      <select @input="setSelected" :value="selectedUserId">
         <option :value="user.id" v-for="user in users" :key="user.id">
           {{ user.name }}
+          
         </option>
         <option value="nobody">Господин никто</option>
       </select>
-      {{ selectedUserId }}
       <h4>Добавить пост:</h4>
 
       <!-- <my-input
@@ -55,12 +55,18 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 import axios from "axios";
 import MyInput from "@/UI/MyInput.vue";
 import MyButton from "@/UI/MyButton.vue";
 import MyTitle from "@/UI/MyTitle.vue";
 export default {
   components: { MyInput, MyButton, MyTitle },
+
+  computed: mapState({
+    selectedUserId: state => state.selectedUserId,
+    
+  }),
 
   data() {
     return {
@@ -69,10 +75,15 @@ export default {
       // user: "",
       title: "",
       body: "",
-      selectedUserId: "nobody",
     };
   },
-  methods: {
+  methods: { 
+    ...mapMutations([
+     'setSelectedUser'
+  ]),
+   setSelected(event){
+    this.setSelectedUser(event.target.value)
+   },
     async createPost() {
       if (this.selectedUserId === "nobody") {
         return;
@@ -121,7 +132,7 @@ export default {
     },
   },
   async mounted() {
-    await this.fetchPosts();
+    await this.fetchPosts(this.selectedUserId);
     await this.fetchUsers();
     console.log(this.users);
   },

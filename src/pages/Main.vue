@@ -1,21 +1,13 @@
 <template>
   <div>
     <my-title>Добро пожаловать!</my-title>
-    <form @submit.prevent>
-      <select v-model="selectedUserId">
-        <option :value="user.id" v-for="user in users" :key="user.id">
-          {{ user.name }}
-        </option>
-        <option value="nobody">Господин никто</option>
-      </select>
-      {{ selectedUserId }}
-    </form>
+   <h4>Наши лучшие пользователи:</h4>
     <div>
       <div
         class="users"
         v-for="user in users"
-        :key="user"
-        @click="$router.push(`/users/${user.id}`)"
+        :key="user.id"
+
       >
         <div><strong>Пользователь:</strong>{{ user.name}}</div>
         <div><strong>Имя:</strong>{{ user.username}}</div>
@@ -129,6 +121,6 @@ export default {
 
 .users {
   margin: 10px 0px;
-  cursor: pointer;
+
 }
 </style>
