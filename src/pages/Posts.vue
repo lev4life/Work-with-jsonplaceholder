@@ -19,7 +19,9 @@
         placeholder="Введите имя пользователя"
         >Пользователь</my-input
       > -->
-      <my-input
+        <my-button @click="showDialog">Добавить</my-button>
+      <my-dialog v-model:show="dialogVisible">
+        <my-input
         class="inp"
         :value="title"
         @input="title = $event.target.value"
@@ -36,6 +38,8 @@
         >Описание</my-input
       >
       <my-button class="btn1" @click="createPost">Добавить пост</my-button>
+      </my-dialog>
+      
     </form>
     <div>
       <!-- <my-button class="btn2" @click="fetchPosts">Получить посты</my-button> -->
@@ -72,6 +76,7 @@ export default {
     return {
       posts: [],
       users: [],
+      dialogVisible: false,
       // user: "",
       title: "",
       body: "",
@@ -83,6 +88,9 @@ export default {
   ]),
    setSelected(event){
     this.setSelectedUser(event.target.value)
+   },
+   showDialog(){
+    this.dialogVisible = true;
    },
     async createPost() {
       if (this.selectedUserId === "nobody") {
@@ -101,6 +109,7 @@ export default {
       // this.user = "";
       this.title = "";
       this.body = "";
+      this.dialogVisible = false;
     },
     async fetchPosts(userId) {
       const url = userId

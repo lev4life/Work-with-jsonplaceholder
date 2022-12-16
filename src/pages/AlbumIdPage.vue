@@ -1,12 +1,12 @@
 <template>
   <div>
     <my-title>Альбом № {{ $route.params.id }}</my-title>
-    <div v-for="photo in photos" :key="photo.id">
+    <div class="post" v-for="photo in photos" :key="photo.id">
       <div><strong>Название:</strong>{{ photo.title }}</div>
       <div><strong>Адрес:</strong>{{ photo.url }}</div>
-      <div><strong>Адрес миниатюры:</strong>{{ photo.thumbnailUrl }}</div>
-      <img :src="photo.thumbnailUrl" >
-      <hr />
+      <div><strong>Миниатюра:</strong></div>
+      <img class="post__img" :src="photo.thumbnailUrl" >
+      <hr class="post__img-line"/>
     </div>
   </div>
 </template>
@@ -45,13 +45,26 @@ export default {
     await this.fetchPhotos();
   },
 };
-</script>
+</script >
 
-<style>
+<style lang="scss" scoped>
 .inp {
   margin: 10px 0px;
 }
 .btn {
   margin-bottom: 10px;
+}
+.post{
+  width: 30%;
+  display:inline-block;
+  margin: 110px;
+  &__img{
+    margin-top:10px;
+    margin-bottom: 10px;
+    margin-left: 28%;
+  }
+  &__img-line{
+    box-shadow: 1px 1px 2px grey;
+  }
 }
 </style>

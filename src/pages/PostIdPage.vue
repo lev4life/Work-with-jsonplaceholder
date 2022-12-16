@@ -3,12 +3,14 @@
     <my-title>Пост № {{ $route.params.id }}</my-title>
     <form @submit.prevent>
       <h4>Добавить комментарий:</h4>
+      <my-button @click="showDialog">Добавить</my-button>
+      <my-dialog v-model:show="dialogVisible">
       <my-input
         class="inp"
         :value="name"
         @input="name = $event.target.value"
         type="text"
-        placeholder="Введите темe комментария"
+        placeholder="Введите тему"
       ></my-input>
       <my-input
         class="inp"
@@ -25,8 +27,9 @@
         placeholder="Введите почту"
       ></my-input>
       <my-button class="btn1" @click="createComment">Отправить</my-button>
+      </my-dialog>
     </form>
-    <div v-for="comment in comments" :key="comment">
+    <div class="post" v-for="comment in comments" :key="comment">
       <div><strong>Название:</strong>{{ comment.name }}</div>
       <div><strong>Email:</strong>{{ comment.email }}</div>
       <div><strong>Описание:</strong>{{ comment.body }}</div>
@@ -45,6 +48,7 @@ export default {
   data() {
     return {
       comments: [],
+      dialogVisible: false,
       name: "",
       email: "",
       body: "",
@@ -52,6 +56,9 @@ export default {
     };
   },
   methods: {
+    showDialog(){
+    this.dialogVisible = true;
+    },
     async createComment() {
       try {
         const response = await axios.post(
@@ -71,6 +78,7 @@ export default {
       this.name = "";
       this.email = "";
       this.body = "";
+      this.dialogVisible = false;
     },
     async fetchComments(postId) {
       const url = postId
@@ -103,11 +111,14 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .inp {
   margin: 10px 0px;
 }
 .btn {
   margin-bottom: 10px;
 }
+
+  
+
 </style>
