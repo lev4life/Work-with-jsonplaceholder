@@ -2,9 +2,9 @@
   <div>
     <my-title>Альбом № {{ $route.params.id }}</my-title>
     <div class="post" v-for="photo in photos" :key="photo.id">
-      <div><strong>Название:</strong>{{ photo.title }}</div>
-      <div><strong>Адрес:</strong>{{ photo.url }}</div>
-      <div><strong>Миниатюра:</strong></div>
+      <div><strong>Название: </strong>{{ photo.title }}</div>
+      <div><strong>Адрес: </strong>{{ photo.url }}</div>
+      <div><strong>Миниатюра: </strong></div>
       <img class="post__img" :src="photo.thumbnailUrl" >
       <hr class="post__img-line"/>
     </div>

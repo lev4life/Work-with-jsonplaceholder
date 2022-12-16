@@ -3,7 +3,7 @@
     <my-title>Пост № {{ $route.params.id }}</my-title>
     <form @submit.prevent>
       <h4>Добавить комментарий:</h4>
-      <my-button @click="showDialog">Добавить</my-button>
+      <my-button class="btn" @click="showDialog">Создать</my-button>
       <my-dialog v-model:show="dialogVisible">
       <my-input
         class="inp"
@@ -30,10 +30,10 @@
       </my-dialog>
     </form>
     <div class="post" v-for="comment in comments" :key="comment">
-      <div><strong>Название:</strong>{{ comment.name }}</div>
-      <div><strong>Email:</strong>{{ comment.email }}</div>
-      <div><strong>Описание:</strong>{{ comment.body }}</div>
-      <hr />
+      <div><strong>Название: </strong>{{ comment.name }}</div>
+      <div><strong>Email: </strong>{{ comment.email }}</div>
+      <div><strong>Описание: </strong>{{ comment.body }}</div>
+      <hr class="hr" />
     </div>
   </div>
 </template>
@@ -116,7 +116,19 @@ export default {
   margin: 10px 0px;
 }
 .btn {
+  width: 190px;
+  left: 0px;
   margin-bottom: 10px;
+}
+
+.hr{
+margin: 20px 0;
+box-shadow: 1px 1px 2px grey;
+}
+
+.btn1 {
+  left: 0px;
+  
 }
 
   

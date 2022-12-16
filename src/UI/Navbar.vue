@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <div class="title"><strong>Quest 3</strong></div>
+    <div class="title" @click="$router.push('/')"><strong>Quest 3</strong></div>
     <div class="navbar__btns">
       <button class="button" @click="$router.push('/')">На главную</button>
       <button class="button" @click="$router.push('/posts')">Посты</button>
@@ -17,12 +17,14 @@ export default {};
 .title {
   margin-top: 16px;
   margin-left: 10px;
+  cursor: pointer;
 }
 
 .navbar {
-  height: 50px;
-  background-color: #805a3b;
   display: flex;
+  height: 50px;
+  background-color: #DDC5A2;
+  box-shadow: 0 0 500px #DDC5A2;
 }
 
 .button {

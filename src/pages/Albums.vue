@@ -2,25 +2,31 @@
   <div>
     <my-title>Альбом</my-title>
     <form>
-      <select @input="setSelected" :value="selectedUserId">
+      <div>
+        <h4>Выберите пользователя:</h4>
+      <my-select @input="setSelected" :value="selectedUserId">
         <option :value="user.id" v-for="user in users" :key="user.id">
         {{user.name}}
         </option>
         <option value="nobody">Господин никто</option>
-      </select>
-
+      </my-select>
+</div>
+      
     </form>
-    <div
+    <div v-if="albums.length > 0">
+      <div
         class="albums"
         v-for="album in albums"
         :key="album"
         @click="$router.push(`/albums/${album.id}`)"
       >
-        <div><strong>Пользователь:</strong>{{ album.userId }}</div>
-        <div><strong>Номер:</strong>{{ album.id }}</div>
-        <div><strong>Название:</strong>{{ album.title }}</div>
-        <hr />
+        <div><strong>Пользователь: </strong>{{ album.userId }}</div>
+        <div><strong>Номер: </strong>{{ album.id }}</div>
+        <div><strong>Название: </strong>{{ album.title }}</div>
+        <hr class="hr" />
       </div>
+      </div>
+      <h4 class="message" v-else>Список постов пуст. Выберите пользователя.</h4>
   </div>
 </template>
 
@@ -114,8 +120,29 @@ methods: {
 
 </script>
 
-<style>
+<style lang="scss">
+
+
+.hr{
+margin: 20px 0;
+box-shadow: 1px 1px 2px grey;
+}
+
+.message {
+  margin-top: 20px;
+  text-align: center;
+  color: #fd974f;
+}
+
 .albums{
+  padding: 10px 10px 0px 10px;
+  transition: 0.3s;
   cursor:pointer;
+
+  &:hover{
+    background-color: #fd974f;
+    border-radius: 12px;
+    box-shadow: 0px 0px 30px #fd974f;
+}
 }
 </style>

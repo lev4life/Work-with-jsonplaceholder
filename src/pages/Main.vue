@@ -9,13 +9,13 @@
         :key="user.id"
 
       >
-        <div><strong>Пользователь:</strong>{{ user.name}}</div>
-        <div><strong>Имя:</strong>{{ user.username}}</div>
-        <div><strong>Эл. почта:</strong>{{ user.email }}</div>
-        <div><strong>Телефон:</strong>{{ user.phone }}</div>
-        <div><strong>Вебсайт:</strong>{{ user.website }}</div>
+        <div><strong>Пользователь: </strong>{{ user.name}}</div>
+        <div><strong>Имя: </strong>{{ user.username}}</div>
+        <div><strong>Эл. почта: </strong>{{ user.email }}</div>
+        <div><strong>Телефон: </strong>{{ user.phone }}</div>
+        <div><strong>Вебсайт: </strong>{{ user.website }}</div>
 
-        <hr />
+        <hr class="hr" />
       </div>
     </div>
   </div>
@@ -111,6 +111,10 @@ export default {
 .inp {
   width: 180px;
   display: flex;
+  margin: 10px 0px;
+}
+
+.hr{
   margin: 10px 0px;
 }
 

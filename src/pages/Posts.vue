@@ -1,47 +1,47 @@
 <template>
   <div>
     <my-title>Посты</my-title>
-    <form @submit.prevent>
-      <select @input="setSelected" :value="selectedUserId">
-        <option :value="user.id" v-for="user in users" :key="user.id">
-          {{ user.name }}
+    <form class="form" @submit.prevent>
+      <div>
+        <h4>Выберите пользователя:</h4>
+        <my-select
           
-        </option>
-        <option value="nobody">Господин никто</option>
-      </select>
-      <h4>Добавить пост:</h4>
+          @input="setSelected"
+          :value="selectedUserId"
+        >
+          <option :value="user.id" v-for="user in users" :key="user.id">
+            {{ user.name }}
+          </option>
+          <option value="nobody">Господин никто</option>
+        </my-select>
+      </div>
+      <div>
+        <h4>Добавить пост:</h4>
+        <my-button class="btn" @click="showDialog">Создать</my-button>
+      </div>
 
-      <!-- <my-input
-        class="inp"
-        :value="user"
-        @input="user = $event.target.value"
-        type="text"
-        placeholder="Введите имя пользователя"
-        >Пользователь</my-input
-      > -->
-        <my-button @click="showDialog">Добавить</my-button>
       <my-dialog v-model:show="dialogVisible">
         <my-input
-        class="inp"
-        :value="title"
-        @input="title = $event.target.value"
-        type="text"
-        placeholder="Введите название"
-        >Название</my-input
-      >
-      <my-input
-        class="inp"
-        :value="body"
-        @input="body = $event.target.value"
-        type="text"
-        placeholder="Введите описание"
-        >Описание</my-input
-      >
-      <my-button class="btn1" @click="createPost">Добавить пост</my-button>
+          class="inp"
+          :value="title"
+          @input="title = $event.target.value"
+          type="text"
+          placeholder="Введите название"
+          >Название</my-input
+        >
+        <my-input
+          class="inp"
+          :value="body"
+          @input="body = $event.target.value"
+          type="text"
+          placeholder="Введите описание"
+          >Описание</my-input
+        >
+        <my-button class="btn1" @click="createPost">Добавить пост</my-button>
       </my-dialog>
-      
     </form>
-    <div>
+
+    <div v-if="posts.length > 0">
       <!-- <my-button class="btn2" @click="fetchPosts">Получить посты</my-button> -->
       <div
         class="posts"
@@ -49,17 +49,18 @@
         :key="post"
         @click="$router.push(`/posts/${post.id}`)"
       >
-        <div><strong>Пользователь:</strong>{{ post.userId }}</div>
-        <div><strong>Название:</strong>{{ post.title }}</div>
-        <div><strong>Описание:</strong>{{ post.body }}</div>
-        <hr />
+        <div><strong>Пользователь: </strong>{{ post.userId }}</div>
+        <div><strong>Название: </strong>{{ post.title }}</div>
+        <div><strong>Описание: </strong>{{ post.body }}</div>
+        <hr class="hr" />
       </div>
     </div>
+    <h4 class="message" v-else>Список постов пуст. Выберите пользователя.</h4>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations } from "vuex";
 import axios from "axios";
 import MyInput from "@/UI/MyInput.vue";
 import MyButton from "@/UI/MyButton.vue";
@@ -68,8 +69,7 @@ export default {
   components: { MyInput, MyButton, MyTitle },
 
   computed: mapState({
-    selectedUserId: state => state.selectedUserId,
-    
+    selectedUserId: (state) => state.selectedUserId,
   }),
 
   data() {
@@ -82,16 +82,14 @@ export default {
       body: "",
     };
   },
-  methods: { 
-    ...mapMutations([
-     'setSelectedUser'
-  ]),
-   setSelected(event){
-    this.setSelectedUser(event.target.value)
-   },
-   showDialog(){
-    this.dialogVisible = true;
-   },
+  methods: {
+    ...mapMutations(["setSelectedUser"]),
+    setSelected(event) {
+      this.setSelectedUser(event.target.value);
+    },
+    showDialog() {
+      this.dialogVisible = true;
+    },
     async createPost() {
       if (this.selectedUserId === "nobody") {
         return;
@@ -157,7 +155,19 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.btn {
+  left: 0;
+  width: 120px;
+}
+
+.form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
 .inp {
   width: 180px;
   display: flex;
@@ -165,11 +175,31 @@ export default {
 }
 
 .btn1 {
-  width: 180px;
+  width: 125px;
   margin-bottom: 10px;
 }
 
+.hr{
+margin: 20px 0;
+box-shadow: 1px 1px 2px grey;
+}
+
+.message {
+  margin-top: 20px;
+  text-align: center;
+  color: #fd974f;
+}
+
 .posts {
+  padding: 10px 10px 0px 10px;
+  transition: 0.3s;
   cursor: pointer;
+
+  &:hover{
+    background-color: #fd974f;
+    border-radius: 12px;
+    box-shadow: 0px 0px 30px #fd974f;
+    
+  }
 }
 </style>
