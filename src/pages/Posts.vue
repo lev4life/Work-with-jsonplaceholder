@@ -3,17 +3,8 @@
     <my-title>Посты</my-title>
     <form class="form" @submit.prevent>
       <div>
-        <h4>Выберите пользователя:</h4>
-        <my-select
-          
-          @input="setSelected"
-          :value="selectedUserId"
-        >
-          <option :value="user.id" v-for="user in users" :key="user.id">
-            {{ user.name }}
-          </option>
-          <option value="nobody">Господин никто</option>
-        </my-select>
+        <h4>Выбрать пользователя:</h4>
+        <UserSelect @input="createPost" />
       </div>
       <div>
         <h4>Добавить пост:</h4>
@@ -49,7 +40,8 @@
         :key="post"
         @click="$router.push(`/posts/${post.id}`)"
       >
-        <div><strong>Пользователь: </strong>{{ post.userId }}</div>
+
+        <div><strong>Пользователь: </strong>{{ getUserNameById(post.userId) }}</div>
         <div><strong>Название: </strong>{{ post.title }}</div>
         <div><strong>Описание: </strong>{{ post.body }}</div>
         <hr class="hr" />
@@ -60,17 +52,21 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import axios from "axios";
 import MyInput from "@/UI/MyInput.vue";
 import MyButton from "@/UI/MyButton.vue";
 import MyTitle from "@/UI/MyTitle.vue";
+import UserSelect from "@/UI/UserSelect.vue";
 export default {
-  components: { MyInput, MyButton, MyTitle },
+  components: { MyInput, MyButton, MyTitle, UserSelect },
 
-  computed: mapState({
-    selectedUserId: (state) => state.selectedUserId,
-  }),
+  computed: {
+    ...mapState({
+      selectedUserId: (state) => state.selectedUserId,
+    }),
+    ...mapGetters(["getUserNameById"]),
+  },
 
   data() {
     return {
@@ -83,7 +79,6 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["setSelectedUser"]),
     setSelected(event) {
       this.setSelectedUser(event.target.value);
     },
@@ -91,10 +86,10 @@ export default {
       this.dialogVisible = true;
     },
     async createPost() {
-      if (this.selectedUserId === "nobody") {
-        return;
-      }
       try {
+        if (this.selectedUserId === "nobody") {
+          return;
+        }
         const response = await axios.post(
           "https://jsonplaceholder.typicode.com/posts",
           { title: this.title, body: this.body, userId: this.selectedUserId }
@@ -104,7 +99,6 @@ export default {
       } catch (e) {
         alert("Ошибка");
       }
-      // this.user = "";
       this.title = "";
       this.body = "";
       this.dialogVisible = false;
@@ -119,37 +113,22 @@ export default {
         setTimeout(() => {
           this.posts = response.data;
           console.log(response);
-        }, 2000);
-      } catch (e) {
-        alert("Ошибка");
-      }
-    },
-    async fetchUsers() {
-      try {
-        const response = await axios.get(
-          "https://jsonplaceholder.typicode.com/users"
-        );
-        setTimeout(() => {
-          this.users = response.data;
-          console.log(response);
         }, 1000);
       } catch (e) {
         alert("Ошибка");
       }
     },
   },
-  async mounted() {
-    await this.fetchPosts(this.selectedUserId);
-    await this.fetchUsers();
-    console.log(this.users);
-  },
   watch: {
-    selectedUserId: async function (val) {
-      if (val === "nobody") {
-        await this.fetchPosts();
-      } else {
-        await this.fetchPosts(val);
-      }
+    selectedUserId: {
+      immediate: true,
+      async handler(newVal) {
+        if (newVal === "nobody") {
+          await this.fetchPosts();
+        } else {
+          await this.fetchPosts(newVal);
+        }
+      },
     },
   },
 };
@@ -167,7 +146,6 @@ export default {
   align-items: center;
 }
 
-
 .inp {
   width: 180px;
   display: flex;
@@ -179,9 +157,9 @@ export default {
   margin-bottom: 10px;
 }
 
-.hr{
-margin: 20px 0;
-box-shadow: 1px 1px 2px grey;
+.hr {
+  margin: 20px 0;
+  box-shadow: 1px 1px 2px grey;
 }
 
 .message {
@@ -195,11 +173,10 @@ box-shadow: 1px 1px 2px grey;
   transition: 0.3s;
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     background-color: #fd974f;
     border-radius: 12px;
     box-shadow: 0px 0px 30px #fd974f;
-    
   }
 }
 </style>

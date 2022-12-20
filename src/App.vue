@@ -12,12 +12,35 @@
 
 <script>
 import Navbar from "@/UI/Navbar.vue"
+import {mapMutations} from "vuex"
+import axios from "axios"
 
 export default {
 components: {
   Navbar
+},
+  methods: {
+    ...mapMutations(['setUsers']),
+    async fetchUsers() {
+      try {
+        const response = await axios.get(
+          "https://jsonplaceholder.typicode.com/users"
+        );
+        setTimeout(() => {
+          console.log('dasfdfsa', response.data);
+          this.setUsers(response.data);
+        }, 1000);
+      } catch (e) {
+        console.log('dsadasdas', e);
+        alert("Ошибка");
+      }
+    },
+  },
+  async mounted() {
+    await this.fetchUsers();
+  }
 }
-}
+
 </script>
 
 <style>
